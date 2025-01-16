@@ -1,16 +1,17 @@
 #----------------------------------------------------------------------------------#
 #Python3.11.9
 #author:Isogai_Hiroto
-#date:2024/12/19
-#Webカメラから画像(jpg/png)を取得し、それを用いたYOLOによる画像認識
+#date:2025/01/15
+#Webカメラからを取得した画像(jpg/png)を用いたYOLOによる画像認識
 #データセットはroboflowに公開しているものを用いた。
 #動作の概要を以下に示す。
     #1.タッチセンサが反応したら、カメラから画像を1回読み取る。
-    #2.反応して何もなかった場合、燃えるごみとして判断する。
+    #2.反応して何もなかった場合、燃やすごみとして判断する。
     #3.画像中からカン・ペットボトルを読み取る。
     #4.リストになかったら燃やすごみとして処理する。
-    #5.複数個あった場合は分別を使用者に勧めるために動かず、音声出力。
+    #5.複数個あった場合は分別を使用者に勧めるために動作せず、音声出力を行う(予定)。
     #6.モータの動作については別関数で処理する。
+    #7.全体の処理が終了したら、ファイルに最後の画像と処理済みの画像を保存。
 #----------------------------------------------------------------------------------#
 from ultralytics import YOLO
 import cv2
@@ -21,11 +22,11 @@ import shutil
 #自作関数
 import voice
 
-#データセットの定義
+#データセットの定義(パスは適宜指定)
 model = YOLO(r'C:\c\code\git_zemi\runs\detect\train_1218\weights\best.pt')
 
 #GPIO.setmode(GPIO.BCM)
-#GPIO18を入力端子設定
+#GPIO18を入力端子設定(18想定で作成)
 #GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 image_path = "result.jpg"
 # Webカメラの起動
@@ -49,6 +50,7 @@ while True:
     #if not(GPIO.input(18) == sw_status):    #もしもボタンに動きがあれば
             #if(GPIO.input(18) == 0):    #ボタンが押されているならば
     if key == ord('q'):
+        #パスは適宜指定
         if os.path.exists(r'C:\c\code\git_zemi\runs\detect\predict\result.jpg'):
             os.remove(r'C:\c\code\git_zemi\runs\detect\predict\result.jpg')
         cv2.imwrite(image_path, frame)
@@ -61,7 +63,7 @@ while True:
         for result in results:
             #認識されたものがなければ燃えるゴミ
             if (len(result.boxes.conf) == 0):
-                print("other")
+                print("other")#ここに燃えるゴミのときのモータの動作を入れる。
                 break
 
             i = 1
@@ -87,16 +89,16 @@ while True:
             if(i == num):
                 match result.boxes.cls[0]:
                     case 1:
-                        print('can')
+                        print('can')#ここにカンのときのモータの動作を入れる。
                         break
                     case 2:
-                        print('pet')
+                        print('pet')#ここにペットボトルのときのモータの動作を入れる。
                         break
                     case 8:
-                        print('pet')
+                        print('pet')#ここにペットボトルのときのモータの動作を入れる。
                         break
                     case _:
-                        print('other')
+                        print('other')#ここに燃えるゴミのときのモータの動作を入れる。
                         break
             elif(i < num):
                 voice.play("分別してください。")
@@ -105,9 +107,9 @@ while True:
             continue
         break
 
-#ファイルの移動
+#ファイルの移動(パスは適宜指定)
 new_path = shutil.move(r'C:\c\code\git_zemi\result.jpg', r'C:\c\code\git_zemi\runs\detect\predict')
 #print(new_path)
 
-#最後の写真を判定し保存
+#最後の写真を判定し保存(パスは適宜指定)
 results = model.predict(r'C:\c\code\git_zemi\runs\detect\predict', project = "runs/detect/predict", name = "2024_1219jikken",save=True, show_labels = True, show_conf = True,conf=0.35)
