@@ -3,7 +3,7 @@
 #author:Isogai_Hiroto
 #date:2025/01/15
 #Webカメラからを取得した画像(jpg/png)を用いたYOLOによる画像認識
-#データセットはroboflowに公開しているものを用いた。
+#データセットはroboflowに公開しているものを用いた。(https://universe.roboflow.com/bao-unatj/beverage-containers-3atxb-vqovx)
 #動作の概要を以下に示す。
     #1.タッチセンサが反応したら、カメラから画像を1回読み取る。
     #2.反応して何もなかった場合、燃やすごみとして判断する。
@@ -23,7 +23,7 @@ import shutil
 import voice
 
 #データセットの定義(パスは適宜指定)
-model = YOLO(r'C:\c\code\git_zemi\runs\detect\train_1218\weights\best.pt')
+model = YOLO(r'C:\c\code\git_zemi\dataset\best11.pt')
 
 #GPIO.setmode(GPIO.BCM)
 #GPIO18を入力端子設定(18想定で作成)
@@ -88,20 +88,17 @@ while True:
             #処理された数を読み取り、1であればそれがなにかによって処理を変える
             if(i == num):
                 match result.boxes.cls[0]:
-                    case 1:
+                    case 0:
                         print('can')#ここにカンのときのモータの動作を入れる。
                         break
-                    case 2:
-                        print('pet')#ここにペットボトルのときのモータの動作を入れる。
-                        break
-                    case 8:
+                    case 3:
                         print('pet')#ここにペットボトルのときのモータの動作を入れる。
                         break
                     case _:
                         print('other')#ここに燃えるゴミのときのモータの動作を入れる。
                         break
             elif(i < num):
-                voice.play("分別してください。")
+                #voice.play("分別してください。")
                 break
         else:
             continue
