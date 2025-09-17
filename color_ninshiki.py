@@ -16,14 +16,19 @@ BLUEHIGH_COLOR = np.array([90, 255, 255]) # 各最大値を指定
 YELLOWLOW_COLOR = np.array([20, 100, 100]) # 各最小値を指定
 YELLOWHIGH_COLOR = np.array([30, 255, 255]) # 各最大値を指定
 
-IMAGECENTER_X = 3024/2 #画像の中点(x座標)
-IMAGECENTER_Y = 4032/2 #画像の中点(y座標)
+IMAGETRIPLITION_X = 3024/3 #画像の3分割点(x座標)
+IMAGETRIPLITION_Y = 4032/3 #画像の3分割点(y座標)
 
 def detect_target(img_name, num):
     img = cv2.imread(img_name) # 画像を読み込む
     x_img = img.shape[0]
     y_img = img.shape[1]
-    central = [x_img / 2, y_img / 2]
+    x_img_mask = x_img
+    y_img_mask = y_img/3
+    x_start = 0
+    y_start = (y_img/3)*2
+    img[y_start:y_start+y_img_mask, x_start:x_start+x_img_mask] = 0
+    cv2.imwrite("mask_img.jpg", img)
 
     img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV) # RGB => YUV(YCbCr)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8)) # claheオブジェクトを生成
@@ -77,15 +82,13 @@ def detect_target(img_name, num):
 
         cv2.imwrite("out_img.jpg", out_img) # 書き出す
 
-        #回転する方向を指定(+45, -45, +135, -135), (初期位置をカメラ台方向と仮定)
-        if (mx >= 0 and mx <= IMAGECENTER_X) and (my >= 0 and my <= IMAGECENTER_Y):
+        #回転する方向を指定(+135, +175(180はカメラ台に激突する), -135), (初期位置をカメラ台方向と仮定)
+        if mx >= 0 and mx <= IMAGETRIPLITION_X:
             return 135
-        elif (mx >= IMAGECENTER_X and mx <= x_img) and (my >= 0 and my <= IMAGECENTER_Y):
-            return -135
-        elif (mx >= 0 and mx <= IMAGECENTER_X) and (my >= IMAGECENTER_Y and my <= y_img):
-            return 45
+        elif mx >= IMAGETRIPLITION_X and mx <= IMAGETRIPLITION_X*2:
+            return 175
         else:
-            return -45
+            return -135
     else:
         print("目標物が見当たりません！！")
         return -1
