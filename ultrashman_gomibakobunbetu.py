@@ -108,28 +108,28 @@ def stop_motor_and_servo(servo):
     print("モーターとサーボを停止しました。")
 
 def move_motor(servo,angle):
-    if angle = -1:
+    if (angle == -1):
         return
     
     # モーターを正転させる
     servo.angle = angle
-    sleep(3)
+    sleep(2)
     
+    
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.HIGH)
+    sleep(2.2)
+    
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.LOW)
+    sleep(2)
     
     GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN1,GPIO.LOW)
-    sleep(2)
+    GPIO.output(IN2,GPIO.LOW)
+    sleep(1.3)
     
     GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN1,GPIO.LOW)
-    sleep(2)
-    
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN1,GPIO.HIGH)
-    sleep(2)
-    
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.LOW)
 
     
     # モーターを逆転させる
