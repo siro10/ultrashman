@@ -18,6 +18,8 @@ model = YOLO(r'/home/taku/ドキュメント/zemi/zemi_code/best11.pt')
 IN1 = 27
 IN2 = 22
 
+
+
 # SG90のピン設定
 SERVO_PIN = 17  # SG90-1
 
@@ -36,8 +38,8 @@ BLUEHIGH_COLOR = np.array([130, 255, 255])
 YELLOWLOW_COLOR = np.array([20, 150, 150])
 YELLOWHIGH_COLOR = np.array([30, 255, 255])
 
-IMAGETRIPLITION_X = 4032//3 #画像の3分割点(x座標)
-IMAGETRIPLITION_Y = 3024//3 #画像の3分割点(y座標)
+IMAGETRIPLITION_X = 640//3 #画像の3分割点(x座標)
+IMAGETRIPLITION_Y = 480//3 #画像の3分割点(y座標)
 
 
 # GPIO初期化
@@ -116,21 +118,20 @@ def move_motor(servo,angle):
     sleep(2)
     
     
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
-    sleep(2.2)
+    GPIO.output(IN1,GPIO.HIGH)
+    GPIO.output(IN2,GPIO.LOW)
+    sleep(4.4)
     
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     sleep(2)
     
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    sleep(1.3)
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.HIGH)
+    sleep(3.3)
     
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
-
     
     # モーターを逆転させる
     servo.angle = 0  
@@ -211,11 +212,11 @@ def detect_target(frame, num):
 
         #回転する方向を指定(+135, +175(180はカメラ台に激突する), -135), (初期位置をカメラ台方向と仮定)
         if mx >= 0 and mx <= IMAGETRIPLITION_X:
-            return 135
+            return 50
         elif mx >= IMAGETRIPLITION_X and mx <= IMAGETRIPLITION_X*2:
-            return 175
+            return 0
         else:
-            return -135
+            return -50
     else:
         print("Target not found!!")
         return -1
