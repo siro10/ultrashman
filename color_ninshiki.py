@@ -5,15 +5,15 @@ import math
 # 赤色は２つの領域にまたがる
 # np.array([色彩, 彩度, 明度])
 # 各値は適宜設定する！！
-REDLOW_COLOR1 = np.array([0, 100, 100]) # 各最小値を指定
-REDHIGH_COLOR1 = np.array([30, 255, 255]) # 各最大値を指定
-REDLOW_COLOR2 = np.array([150, 100, 100])
+REDLOW_COLOR1 = np.array([0, 150, 150]) # 各最小値を指定
+REDHIGH_COLOR1 = np.array([20, 255, 255]) # 各最大値を指定
+REDLOW_COLOR2 = np.array([150, 150, 150])
 REDHIGH_COLOR2 = np.array([179, 255, 255])
 
-BLUELOW_COLOR = np.array([30, 100, 100]) # 各最小値を指定
-BLUEHIGH_COLOR = np.array([90, 255, 255]) # 各最大値を指定
+BLUELOW_COLOR = np.array([100, 150, 150]) # 各最小値を指定
+BLUEHIGH_COLOR = np.array([130, 255, 255]) # 各最大値を指定
 
-YELLOWLOW_COLOR = np.array([20, 100, 100]) # 各最小値を指定
+YELLOWLOW_COLOR = np.array([20, 150, 150]) # 各最小値を指定
 YELLOWHIGH_COLOR = np.array([30, 255, 255]) # 各最大値を指定
 
 IMAGETRIPLITION_X = 4032//3 #画像の3分割点(x座標)
@@ -58,7 +58,14 @@ def detect_target(img_name, num):
     #masked_img = cv2.bitwise_and(img_blur, img_blur, mask= yellowmask) # 元画像から特定の色を抽出
 
     out_img = masked_img
-    num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask) # 連結成分でラベリングする
+    match num:
+        case 1:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(bluemask) # 連結成分でラベリングする
+        case 2:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(yellowmask) # 連結成分でラベリングする
+        case _:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask) # 連結成分でラベリングする
+    #num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask) # 連結成分でラベリングする
     # 背景のラベルを削除
     num_labels = num_labels - 1
     stats = np.delete(stats, 0, 0)
@@ -95,4 +102,4 @@ def detect_target(img_name, num):
 
 #このプログラムのみで動作させるときのmain文
 if __name__ == '__main__':
-    detect_target("C:\c\code\git_zemi\jikken0917.jpg", 2) # ファイル名を入力
+    detect_target(r'C:\c\code\git_zemi\0922_jikken.jpg', 1) # ファイル名を入力
