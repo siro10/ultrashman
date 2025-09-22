@@ -108,11 +108,28 @@ def stop_motor_and_servo(servo):
     print("モーターとサーボを停止しました。")
 
 def move_motor(servo,angle):
+    if angle = -1:
+        return
+    
     # モーターを正転させる
     servo.angle = angle
-    sleep(2)
-
+    sleep(3)
     
+    
+    GPIO.output(IN1,GPIO.HIGH)
+    GPIO.output(IN1,GPIO.LOW)
+    sleep(2)
+    
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN1,GPIO.LOW)
+    sleep(2)
+    
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN1,GPIO.HIGH)
+    sleep(2)
+    
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN1,GPIO.LOW)
 
     
     # モーターを逆転させる
@@ -216,6 +233,7 @@ def main():
         sys.exit()
  
     cap.set(cv2.CAP_PROP_FPS, 10)
+    stop_motor_and_servo(servo)
     
     # 最初のフレームを背景画像に設定
     bg = capture(cap)
