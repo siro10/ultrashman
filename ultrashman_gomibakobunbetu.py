@@ -10,6 +10,7 @@ import time
 from gtts import gTTS
 import pygame
 import os
+import math
 # Initialize the model (using a pre-trained YOLOv8 model)
 model = YOLO(r'/home/taku/ドキュメント/zemi/zemi_code/best11.pt')
 
@@ -24,19 +25,19 @@ MIN_DEGREE = -180       # 000 : -90degree
 MAX_DEGREE = 180        # 180 : +90degree
 
 
-REDLOW_COLOR1 = np.array([0, 100, 100])
-REDHIGH_COLOR1 = np.array([30, 255, 255])
-REDLOW_COLOR2 = np.array([150, 100, 100])
+REDLOW_COLOR1 = np.array([0, 150, 150])
+REDHIGH_COLOR1 = np.array([20, 255, 255])
+REDLOW_COLOR2 = np.array([150, 150, 150])
 REDHIGH_COLOR2 = np.array([179, 255, 255])
 
-BLUELOW_COLOR = np.array([30, 100, 100])
-BLUEHIGH_COLOR = np.array([90, 255, 255])
+BLUELOW_COLOR = np.array([100, 150, 150])
+BLUEHIGH_COLOR = np.array([130, 255, 255])
 
-YELLOWLOW_COLOR = np.array([20, 100, 100])
+YELLOWLOW_COLOR = np.array([20, 150, 150])
 YELLOWHIGH_COLOR = np.array([30, 255, 255])
 
-IMAGETRIPLITION_X = 3024/3 #画像の3分割点(x座標)
-IMAGETRIPLITION_Y = 4032/3 #画像の3分割点(y座標)
+IMAGETRIPLITION_X = 4032//3 #画像の3分割点(x座標)
+IMAGETRIPLITION_Y = 3024//3 #画像の3分割点(y座標)
 
 
 # GPIO初期化
@@ -122,13 +123,14 @@ def move_motor(servo,angle):
 
 
 def detect_target(frame, num):
-    img = frame.copy()  # Load image
+    img = frame.copy()  
+    #img = cv2.imread(frame)
     x_img = img.shape[0]
     y_img = img.shape[1]
-    x_img_mask = x_img
-    y_img_mask = y_img//3
+    x_img_mask = 4032
+    y_img_mask = IMAGETRIPLITION_Y
     x_start = 0
-    y_start = (y_img//3)*2
+    y_start = IMAGETRIPLITION_Y*2
     img[y_start:y_start+y_img_mask, x_start:x_start+x_img_mask] = 0
     cv2.imwrite("mask_img.jpg", img)
 
@@ -159,7 +161,16 @@ def detect_target(frame, num):
             masked_img = cv2.bitwise_and(img_blur, img_blur, mask= redmask)
 
     out_img = masked_img
-    num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask)  # Label connected components
+    
+    match num:
+        case 1:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(bluemask) # 連結成分でラベリングする
+        case 2:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(yellowmask) # 連結成分でラベリングする
+        case _:
+            num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask) # 連結成分でラベリングする
+    
+    #num_labels, label_img, stats, centroids = cv2.connectedComponentsWithStats(redmask)  # Label connected components
     num_labels = num_labels - 1  # Remove background label
     stats = np.delete(stats, 0, 0)
     centroids = np.delete(centroids, 0, 0)
