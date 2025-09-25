@@ -70,9 +70,9 @@ def mark(mask, frame):
         if (contours):
             target = contours[0]
         for cnt in contours:
-             #輪郭の面積を求めてくれるcontourArea
+            #輪郭の面積を求めてくれるcontourArea
             area = cv2.contourArea(cnt)
-            if max_area < area and area < 10000 and area > 800:
+            if max_area < area and area > 800 and area < 10000:
                 max_area = area
                 target = cnt
             # 動いているエリアのうちそこそこの大きさのものがあればそれを矩形で表示する
