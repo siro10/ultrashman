@@ -30,5 +30,14 @@
   - 静止画像による背景差分プログラム
   - **Background Subtraction.py** のプロトタイプ
  
-- **camera.py**
-  -  
+- **camera_test(realtime).py**
+  - Webカメラによるリアルタイム認識プログラム
+  - 適切なデータセットを選び，Webカメラを用いて，リアルタイムでゴミの種類を検知する。
+
+- **learningmodel1.py** & **learningmodel11.py**
+  - 認識モデル作成用プログラム
+  - roboflowから公開ラベル付きデータセットを選び，Gitファイルで自分のPCにダウンロード。
+  - Gitファイル中の[args.yaml]ファイルを挿入し，推論することができる。
+  -epoch数が多ければ多いほど正確なモデルができるが，時間がかかる可能性があるため，適切なepoch, imgszにする。
+
+- **** 
