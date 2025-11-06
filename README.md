@@ -69,10 +69,16 @@
 
 *基本的に正規プログラム以外は単体動作確認済み*
 
-##データセットについて
+## データセットについて
 - ここにおいてある[best11.pt]を使ってください。
 - もし他のもやってみたいのであればroboflowから探してみてください。その際，YoloのバージョンについてはYolov11 or Yolov8でお願いします(以上2つでしか動作確認をしていないため)。
 
-##参考ＵＲＬ
+## 参考ＵＲＬ
 - <https://www.hinomaruc.com/displaying-results-of-object-detection-with-yolov8/>, YOLOv8による物体検知の結果を表示してみる
 - <https://qiita.com/daifuku10/items/50cb5cd9740e07fde591>, Python で物体認識AIのYOLOv8を試してみた！〜応用編〜
+- <https://ai-wonderland.com/entry/yolov8webcamera>, 【YOLOv8】WindowsでWEBカメラからリアルタイム物体検出
+- <https://qiita.com/Mikeinu/items/530bdb2ddeeedc32eb58>, 【Python】最新物体検知AI YOLOv8のPythonライブラリ ultralytics がすごすぎる！
+- <https://universe.roboflow.com/>, Roboflowホームページ
+- <https://python.joho.info/opencv-tutorial/>, PythonとOpenCVで画像処理プログラミング超入門
+- <https://burgerdog.hatenablog.com/entry/opencvpi>, 背景差分による物体検知
+- <https://docs.roboflow.com/roboflow/roboflow-jp/universe/roboflow-universe-toha>, Roboflow Universe とは？ 
