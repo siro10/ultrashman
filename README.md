@@ -73,6 +73,12 @@
 - ここにおいてある[best11.pt]を使ってください。
 - もし他のもやってみたいのであればroboflowから探してみてください。その際，YoloのバージョンについてはYolov11 or Yolov8でお願いします(以上2つでしか動作確認をしていないため)。
 
+## 今後の展望
+- タッチセンサにすれば処理が軽くなるかもしれない
+  ->  **zemimota_tom.py**に処理を加えることで可能
+- ゴミの認識が完璧でない
+  -> 一から作れば正確なデータセットができる。Roboflowで自作データセットの作成が可能。方法は参考URLから。
+
 ## 参考ＵＲＬ
 - <https://www.hinomaruc.com/displaying-results-of-object-detection-with-yolov8/>, YOLOv8による物体検知の結果を表示してみる
 - <https://qiita.com/daifuku10/items/50cb5cd9740e07fde591>, Python で物体認識AIのYOLOv8を試してみた！〜応用編〜
