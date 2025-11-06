@@ -27,4 +27,8 @@
     - その面積の重点を返す。
 
 - **Detection of changes.py**
-  
+  - 静止画像による背景差分プログラム
+  - **Background Subtraction.py** のプロトタイプ
+ 
+- **camera.py**
+  -  
