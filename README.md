@@ -7,13 +7,13 @@
 - ゴミを種類を自動判別して捨ててくれるシステム。
 
 ## コードの説明
-1. Background Subtraction.py
+- **Background Subtraction.py**
   - 背景差分プログラム
   - 現在の画像と少し前の画像を比較することで，カメラ画像中のどこが変化したか読み取る。
   - ゴミが台に載ったことを認識するために利用した。
   - 今後タッチセンサ等に置き換わるときには必要ない。
 
-2. Color recognition.py
+- **Color recognition.py**
   - 色認識プログラム
   - 画像中の 〇 色の面積が一番広い所を探す。
   - ゴミ箱の位置を読み取るために利用した。
@@ -26,5 +26,5 @@
     - 一番赤色の面積が広い所を計算。
     - その面積の重点を返す。
 
-3. Detection of changes.py
+- **Detection of changes.py**
   
