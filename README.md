@@ -63,4 +63,16 @@
 - **zemimota_tom.py**
   - サーボモータ・マブチモータ用プログラム
 
-- **ultrashman_ReRe**
+- **ultrashman_ReRe.py** or **ultrashman_gomibakobunbetsu.py**
+  - 正規プログラム
+  - とりあえず前者が完成形プログラムなので，筐体の様相を整えたら，このプログラムを動かしてください。
+
+*基本的に正規プログラム以外は単体動作確認済み*
+
+##データセットについて
+- ここにおいてある[best11.pt]を使ってください。
+- もし他のもやってみたいのであればroboflowから探してみてください。その際，YoloのバージョンについてはYolov11 or Yolov8でお願いします(以上2つでしか動作確認をしていないため)。
+
+##参考ＵＲＬ
+- <https://www.hinomaruc.com/displaying-results-of-object-detection-with-yolov8/>, YOLOv8による物体検知の結果を表示してみる
+- <https://qiita.com/daifuku10/items/50cb5cd9740e07fde591>, Python で物体認識AIのYOLOv8を試してみた！〜応用編〜
