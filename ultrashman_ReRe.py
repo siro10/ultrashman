@@ -13,12 +13,11 @@ import os
 import math
 # Initialize the model (using a pre-trained YOLOv8 model)
 model = YOLO(r'/home/taku/ドキュメント/zemi/zemi_code/best.pt')
+# 上記の文は適宜変える
 
 # モーター制御用ピン
 IN1 = 27
 IN2 = 22
-
-
 
 # SG90のピン設定
 SERVO_PIN = 17  # SG90-1
@@ -41,7 +40,6 @@ YELLOWHIGH_COLOR = np.array([30, 255, 255])
 IMAGETRIPLITION_X = 640//3 #画像の3分割点(x座標)
 IMAGETRIPLITION_Y = 480//3 #画像の3分割点(y座標)
 
-
 # GPIO初期化
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(IN1, GPIO.OUT)
@@ -53,7 +51,6 @@ factory = PiGPIOFactory()
 servo = AngularServo(SERVO_PIN, min_angle=MIN_DEGREE, max_angle=MAX_DEGREE, 
                     min_pulse_width=1/1000, max_pulse_width=2/1000, frame_width=1/50,
                     pin_factory=factory)
-
 
 # 背景差分版
 def capture(cap):
@@ -86,6 +83,7 @@ def mark(mask, frame):
  
         return ref, areaf
 
+# 音声をmp3ファイルに変える
 def notify_label(label_text):
     tts = gTTS(text=f"{label_text}が見つかりました", lang='ja')
     tts.save("label_notify.mp3")
@@ -117,7 +115,6 @@ def move_motor(servo,angle):
     servo.angle = angle
     sleep(2)
     
-    
     GPIO.output(IN1,GPIO.HIGH)
     GPIO.output(IN2,GPIO.LOW)
     sleep(4.4)
@@ -137,9 +134,6 @@ def move_motor(servo,angle):
     servo.angle = 0  
     sleep(2)
 
-    # モーター停止
-
-
 def detect_target(frame, num):
     img = frame.copy()  
     #img = cv2.imread(frame)
@@ -156,7 +150,6 @@ def detect_target(frame, num):
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))  # Create CLAHE object
     img_yuv[:,:,0] = clahe.apply(img_yuv[:,:,0])  # Apply histogram equalization to luminance channel
     img = cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)  # Convert YUV back to RGB
-
     img_blur = cv2.blur(img, (15, 15))  # Apply smoothing filter
 
     hsv = cv2.cvtColor(img_blur, cv2.COLOR_BGR2HSV)  # Convert BGR to HSV
@@ -222,8 +215,6 @@ def detect_target(frame, num):
         return -1
 
 
-
-
 def main():
     #has_dropped = False
     i = 0      # カウント変数
@@ -281,15 +272,15 @@ def main():
                         if (len(result.boxes.conf) == 0):
                             print("other")#ここに燃えるゴミのときのモータの動作を入れる。
                             angle = detect_target(frame,0)
+                            notify_label("燃えるゴミ")
                             move_motor(servo, angle)
-                            has_dropped = True
                             ref = 0
                             break
 
                         i = 1
                         num = len(result.boxes.conf)
 
-                            # Detection
+                        # Detection
                         print('---boxes.xyxy---')
                         print(result.boxes.xyxy)   # box with xyxy format, (N, 4)
                         print('---boxes.xywh---')
@@ -305,32 +296,32 @@ def main():
 
                         print(result.names)
 
-            #処理された数を読み取り、1であればそれがなにかによって処理を変える
+                        #処理された数を読み取り、1であればそれがなにかによって処理を変える
                         if(i == num):
                             match result.boxes.cls[0]:
                                 case 0:
                                     print('can')#ここにカンのときのモータの動作を入れる。
                                     angle = detect_target(frame,1)
+                                    notify_label("缶")
                                     move_motor(servo, angle)
-                                    #has_dropped = True
                                     ref = 0
                                     break
                                 case 3:
                                     print('pet')#ここにペットボトルのときのモータの動作を入れる。
                                     angle = detect_target(frame,2)
+                                    notify_label("ペットボトル")
                                     move_motor(servo, angle)
-                                    #has_dropped = True
                                     ref = 0
                                     break
                                 case _:
                                     print('other')#ここに燃えるゴミのときのモータの動作を入れる。
                                     angle = detect_target(frame,0)
+                                    notify_label("燃えるゴミ")
                                     move_motor(servo, angle)
-                                    has_dropped = True
                                     ref = 0
                                     break
                         elif(i < num):
-                #voice.play("分別してください。")
+                            #voice.play("分別してください。")
                             break
                     else:
                         continue
@@ -385,11 +376,13 @@ def main():
                     #has_dropped = False
 #-------------------------------------------------#
 
+
+          
             # フレームとマスク画像を表示
             cv2.imshow("areaframe", areaframe)
         skip_count = (skip_count + 1) % 30
         
-        i += 1    # カウントを1増やす
+        i += 1   
         if (ref):
            i = 0
            ref = 0
