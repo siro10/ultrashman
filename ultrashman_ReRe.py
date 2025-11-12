@@ -25,7 +25,6 @@ SERVO_PIN = 17  # SG90-1
 MIN_DEGREE = -180       # 000 : -90degree
 MAX_DEGREE = 180        # 180 : +90degree
 
-
 REDLOW_COLOR1 = np.array([0, 150, 150])
 REDHIGH_COLOR1 = np.array([20, 255, 255])
 REDLOW_COLOR2 = np.array([150, 150, 150])
