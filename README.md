@@ -69,6 +69,30 @@
 
 *基本的に正規プログラム以外は単体動作確認済み*
 
+## pythonの初期設定
+### アップデート
+- sudo apt update
+- sudo apt install python3 python3-pip -y
+
+### 画像処理系
+| <モジュール名> | <役割> | <インストール方法> |
+|---------------|--------------------|--------------------|
+|opencv-python|カメラ映像取得・画像処理|pip install opencv-python|
+|numpy|配列演算・マスク処理|pip install numpy|
+|ultralytics|YOLOv8(物体認識)|pip install ultralytics|
+|gpiozero|GPIO制御(サーボ)|pip install gpiozero|
+|pigpio|GPIO信号の精密制御|sudo apt install pigpio python3-pigpio -y|
+|RPi.GPIO|GPIO制御(モーター)|pip install RPi.GPIO|
+|pygame|音声再生|pip install pygame|
+|gTTS|音声合成|pip install gTTS|
+
+### サーボ制御系
+(一回入力すれば以降は大丈夫)
+- sudo systemctl enable pigpiod
+- sudo systemctl start pigpiod
+
+- エラーなどありましたら適宜対応お願いします
+
 ## データセットについて
 - ここにおいてある[best11.pt]を使ってください。
 - もし他のもやってみたいのであればroboflowから探してみてください。その際，YoloのバージョンについてはYolov11 or Yolov8でお願いします(以上2つでしか動作確認をしていないため)。
