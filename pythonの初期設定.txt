@@ -5,19 +5,20 @@ sudo apt install python3 python3-pip -y
 
 <モジュール名>	   <役割>			  <インストール方法>
 opencv-python	   カメラ映像取得・画像処理	  pip install opencv-python
-numpy		   配列演算・マスク処理		  pip install numpy
-ultralytics	   YOLOv8（物体認識）		  pip install ultralytics
-gpiozero	   GPIO制御（サーボ）		  pip install gpiozero
-pigpio	           GPIO信号の精密制御		  sudo apt install pigpio python3-pigpio -y
-RPi.GPIO	   GPIO制御（モーター）		  pip install RPi.GPIO
-pygame		   音声再生		  	  pip install pygame
-gTTS		   音声合成		          pip install gTTS
+numpy		         配列演算・マスク処理		  pip install numpy
+ultralytics	     YOLOv8（物体認識）		  pip install ultralytics
+gpiozero	       GPIO制御（サーボ）		  pip install gpiozero
+pigpio	         GPIO信号の精密制御		  sudo apt install pigpio python3-pigpio -y
+RPi.GPIO	       GPIO制御（モーター）		pip install RPi.GPIO
+pygame		       音声再生		  	        pip install pygame
+gTTS		         音声合成		            pip install gTTS
 
 
 <サーボを動かすため>
 (一回入力すれば以降は大丈夫)
 sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
+
 
 
 #エラーなどありましたら適宜対応お願いします
